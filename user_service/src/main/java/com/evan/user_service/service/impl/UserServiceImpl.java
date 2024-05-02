@@ -2,6 +2,8 @@ package com.evan.user_service.service.impl;
 
 import com.evan.user_service.dto.UserDTO;
 import com.evan.user_service.entity.User;
+import com.evan.user_service.exception.ResourceDuplicateException;
+import com.evan.user_service.exception.ResourceNotFoundException;
 import com.evan.user_service.mapper.UserMapper;
 import com.evan.user_service.repository.UserRepository;
 import com.evan.user_service.service.UserService;
@@ -23,6 +25,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO saveUser(UserDTO userDTO) {
         LOGGER.info("inside saveUser() - in serviceImpl, email is: " + userDTO.getEmail());
+        User checkExist = userRepository.findByEmail(userDTO.getEmail());
+        LOGGER.info("check if exist user: " + checkExist);
+        if (checkExist != null) throw new ResourceDuplicateException("User", "email", userDTO.getEmail());
         User user = UserMapper.mapToUser(userDTO);
         User savedUser = userRepository.save(user);
         UserDTO savedUserDto = UserMapper.mapToUserDto(savedUser);
@@ -32,7 +37,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserById(Long userid) {
         LOGGER.info("inside getUserById() - ");
-        User user = userRepository.findById(userid).get();
+        User user = userRepository.findById(userid).orElseThrow(
+                () -> new ResourceNotFoundException("User", "id", userid)
+        );
+
         UserDTO userDTO = UserMapper.mapToUserDto(user);
 
         return userDTO;
@@ -41,7 +49,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserByEmail(String email) {
         LOGGER.info("inside getUserByEmail() - ");
+
         User user = userRepository.findByEmail(email);
+//        System.out.println("find user by email: " + user);
+       if (user == null) throw new ResourceNotFoundException("User", "email", email);
         UserDTO userDTO = UserMapper.mapToUserDto(user);
         return userDTO;
     }
@@ -58,6 +69,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUserDTO(UserDTO userDTO) {
         LOGGER.info("inside updateUserDTO - ");
         User findUser = userRepository.findByEmail(userDTO.getEmail());
+        if (findUser == null) throw new ResourceNotFoundException("User", "email", userDTO.getEmail());
         User updateUser = new User(
                 userDTO.getEmail(),
                 userDTO.getUsername(),
@@ -75,6 +87,7 @@ public class UserServiceImpl implements UserService {
     public String deleteUserByEmail(String email) {
         LOGGER.info("inside deleteUserByEmail() - ");
         User delUser = userRepository.findByEmail(email);
+        if (delUser == null) throw new ResourceNotFoundException("User", "email", email);
         userRepository.delete(delUser);
         return "Success delete";
     }
