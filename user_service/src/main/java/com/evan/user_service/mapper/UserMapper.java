@@ -9,7 +9,8 @@ public class UserMapper {
                 user.getEmail(),
                 user.getUsername(),
                 user.getPassword(),
-                user.getRole()
+                user.getRole(),
+                user.getPosts()
         );
         return userDTO;
     }
@@ -19,7 +20,8 @@ public class UserMapper {
                 userDTO.getEmail(),
                 userDTO.getUsername(),
                 userDTO.getPassword(),
-                userDTO.getRole()
+                userDTO.getRole(),
+                userDTO.getPosts()
         );
         return user;
     }

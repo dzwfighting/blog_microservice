@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Schema(
         description = "UserDto Model Information"
 )
@@ -41,5 +43,10 @@ public class UserDTO {
     )
     @NotNull(message = "role should not be null")
     private int role;
+
+    @Schema(
+            description = "All posts user post"
+    )
+    private List<Long> posts;
 }
 

@@ -1,7 +1,6 @@
 package com.evan.user_service.service;
 
 import com.evan.user_service.dto.UserDTO;
-import com.evan.user_service.entity.User;
 
 import java.util.List;
 
