@@ -40,4 +40,19 @@ public class Post {
         this.description = description;
         this.category = category;
     }
+
+    public Post(String author, String title, String description, String category) {
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.category = category;
+    }
+
+    public Post(String author, String title, String description, String category, List<String> comments) {
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.comments = comments;
+    }
 }

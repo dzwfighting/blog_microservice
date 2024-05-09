@@ -24,8 +24,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO savePost(PostDTO post) {
         LOGGER.info("in savePost()");
-        Post checkPost = postRepository.findById(post.getPostId()).get();
-        if (checkPost != null) throw new ResourceDuplicateException("Post", "id", post.getPostId());
         Post convertPost = PostMapper.mapToPost(post);
         Post newPost = postRepository.save(convertPost);
         PostDTO postDto = PostMapper.mapToPostDTO(newPost);
@@ -34,6 +32,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO getPostById(Long postId) {
+        LOGGER.info("in getPostById");
         Post post = postRepository.findById(postId).get();
         if (postId == null) throw new ResourceNotFoundException("Post", "id", postId);
         PostDTO postDto = PostMapper.mapToPostDTO(post);
@@ -41,7 +40,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostDTO> getPostsByTitle(String title) {
+        LOGGER.info("get posts by title");
+        List<Post> posts = postRepository.findByTitle(title);
+        List<PostDTO> postsDto = posts.stream().map(PostMapper::mapToPostDTO).collect(Collectors.toList());
+        return postsDto;
+    }
+
+    @Override
+    public List<PostDTO> getPostsByAuthor(String author) {
+        LOGGER.info("get posts by author");
+        List<Post> posts = postRepository.findByAuthor(author);
+        List<PostDTO> postsDto = posts.stream().map(PostMapper::mapToPostDTO).collect(Collectors.toList());
+        return postsDto;
+    }
+
+    @Override
     public List<PostDTO> getAllPosts() {
+        LOGGER.info("get all posts");
         List<Post> posts = postRepository.findAll();
         List<PostDTO> postDTOS = posts.stream().map(PostMapper::mapToPostDTO).collect(Collectors.toList());
         return postDTOS;
@@ -49,13 +65,15 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO updatePost(PostDTO postDTO) {
+        LOGGER.info("in updatePost()");
         Post oldPost = postRepository.findById(postDTO.getPostId()).get();
         if (oldPost == null) throw new ResourceNotFoundException("Post", "id", postDTO.getPostId());
-        oldPost.setAuthor(postDTO.getAuthor());
-        oldPost.setTitle(postDTO.getTitle());
-        oldPost.setDescription(postDTO.getDescription());
-        oldPost.setCategory(postDTO.getCategory());
-        oldPost.setComments(postDTO.getComments());
+        Post newPost = PostMapper.mapToPost(postDTO);
+        oldPost.setAuthor(newPost.getAuthor());
+        oldPost.setTitle(newPost.getTitle());
+        oldPost.setDescription(newPost.getDescription());
+        oldPost.setCategory(newPost.getCategory());
+        oldPost.setComments(newPost.getComments());
         Post updatePost = postRepository.save(oldPost);
         PostDTO updatePostDto = PostMapper.mapToPostDTO(updatePost);
         return updatePostDto;
@@ -63,6 +81,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public String deletePost(Long postId) {
+        LOGGER.info("in deletePost()");
         Post delPost = postRepository.findById(postId).get();
         if (delPost == null) throw new ResourceNotFoundException("Post", "id", postId);
         postRepository.delete(delPost);
