@@ -1,16 +1,21 @@
 package com.evan.blogpost_service.service.impl;
 
+import com.evan.blogpost_service.dto.APIResponseDTO;
 import com.evan.blogpost_service.dto.PostDTO;
+import com.evan.blogpost_service.dto.UserDTO;
 import com.evan.blogpost_service.entity.Post;
 import com.evan.blogpost_service.exception.ResourceDuplicateException;
 import com.evan.blogpost_service.exception.ResourceNotFoundException;
 import com.evan.blogpost_service.mapper.PostMapper;
 import com.evan.blogpost_service.repository.PostRepository;
+import com.evan.blogpost_service.service.ApiClient;
 import com.evan.blogpost_service.service.PostService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +24,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PostServiceImpl implements PostService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PostServiceImpl.class);
+//    private WebClient webClient;
+    private ApiClient apiClient;
     private PostRepository postRepository;
 
     @Override
@@ -31,12 +38,25 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO getPostById(Long postId) {
+    public APIResponseDTO getPostById(Long postId) {
         LOGGER.info("in getPostById");
         Post post = postRepository.findById(postId).get();
         if (postId == null) throw new ResourceNotFoundException("Post", "id", postId);
+
+//        UserDTO userDTO = webClient.get()
+//                .uri("http://localhost:8081/api/users/get/" + post.getAuthor())
+//                .retrieve()
+//                .bodyToMono(UserDTO.class)
+//                .block();
+        UserDTO userDTO = apiClient.getUser(post.getAuthor());
         PostDTO postDto = PostMapper.mapToPostDTO(post);
-        return postDto;
+
+        APIResponseDTO apiResponseDTO = new APIResponseDTO();
+        apiResponseDTO.setUserDTO(userDTO);
+        apiResponseDTO.setPostDTO(postDto);
+
+//        return postDto;
+        return apiResponseDTO;
     }
 
     @Override
@@ -87,4 +107,5 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(delPost);
         return "Success delete";
     }
+
 }

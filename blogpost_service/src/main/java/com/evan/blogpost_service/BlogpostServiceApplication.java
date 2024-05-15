@@ -7,6 +7,10 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @OpenAPIDefinition(
 		info = @Info(
@@ -29,7 +33,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		)
 )
 @SpringBootApplication
+@EnableFeignClients
 public class BlogpostServiceApplication {
+
+//	@Bean
+//	public WebClient webClient() {
+//		return WebClient.builder().build();
+//	}
 	public static void main(String[] args) {
 		SpringApplication.run(BlogpostServiceApplication.class, args);
 	}

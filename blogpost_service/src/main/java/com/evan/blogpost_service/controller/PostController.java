@@ -1,5 +1,6 @@
 package com.evan.blogpost_service.controller;
 
+import com.evan.blogpost_service.dto.APIResponseDTO;
 import com.evan.blogpost_service.dto.PostDTO;
 import com.evan.blogpost_service.exception.ResourceNotFoundException;
 import com.evan.blogpost_service.service.PostService;
@@ -7,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.websocket.OnError;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +48,9 @@ public class PostController {
             description = "HTTP Status 201 CREATED"
     )
     @GetMapping("{postId}")
-    public ResponseEntity<PostDTO> getPostById(@PathVariable Long postId) {
-        PostDTO postDTO = postService.getPostById(postId);
-        return new ResponseEntity<>(postDTO, HttpStatus.OK);
+    public ResponseEntity<APIResponseDTO> getPostById(@PathVariable Long postId) {
+        APIResponseDTO apiResponseDTO = postService.getPostById(postId);
+        return new ResponseEntity<>(apiResponseDTO, HttpStatus.OK);
     }
 
     @Operation(
@@ -105,8 +105,9 @@ public class PostController {
     )
     @PutMapping
     public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDTO) {
-        PostDTO checkPost = postService.getPostById(postDTO.getPostId());
-        if (checkPost == null) throw new ResourceNotFoundException("Post", "postId", postDTO.getPostId());
+//        PostDTO checkPost = postService.getPostById(postDTO.getPostId());
+        APIResponseDTO apiResponseDTO = postService.getPostById(postDTO.getPostId());
+        if (apiResponseDTO == null) throw new ResourceNotFoundException("Post", "postId", postDTO.getPostId());
         PostDTO updatePost = postService.updatePost(postDTO);
         return new ResponseEntity<>(updatePost, HttpStatus.OK);
     }
@@ -121,8 +122,9 @@ public class PostController {
     )
     @DeleteMapping("{postId}")
     public ResponseEntity<String> deletePostById(@PathVariable Long postId) {
-        PostDTO checkPostDto = postService.getPostById(postId);
-        if (checkPostDto == null) throw new ResourceNotFoundException("Post", "postId", postId);
+//        PostDTO checkPostDto = postService.getPostById(postId);
+        APIResponseDTO apiResponseDTO = postService.getPostById(postId);
+        if (apiResponseDTO == null) throw new ResourceNotFoundException("Post", "postId", postId);
         String delRes = postService.deletePost(postId);
         return new ResponseEntity<>(delRes, HttpStatus.OK);
     }
