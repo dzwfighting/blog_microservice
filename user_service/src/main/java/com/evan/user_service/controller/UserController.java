@@ -47,7 +47,7 @@ public class UserController {
             responseCode = "201",
             description = "HTTP Status 201 CREATED"
     )
-    @GetMapping("users")
+    @GetMapping
     public ResponseEntity<List<UserDTO>> getUsers() {
         List<UserDTO> userDTOS = userService.getAllUsers();
         return new ResponseEntity<>(userDTOS, HttpStatus.OK);
@@ -61,7 +61,7 @@ public class UserController {
             responseCode = "201",
             description = "HTTP Status 201 CREATED"
     )
-    @GetMapping("{userid}")
+    @GetMapping("id/{userid}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long userid) {
         UserDTO userDTO = userService.getUserById(userid);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
@@ -75,7 +75,7 @@ public class UserController {
             responseCode = "201",
             description = "HTTP Status 201 CREATED"
     )
-    @GetMapping("get/{email}")
+    @GetMapping("email/{email}")
     public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
         UserDTO userDTO = userService.getUserByEmail(email);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
