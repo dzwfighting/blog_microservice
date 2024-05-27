@@ -26,7 +26,7 @@ public class CommentDTO {
             description = "Comment's reviewer"
     )
     @Email
-    @NotEmpty(message = "comment's reviewer should not be empty")
+//    @NotEmpty(message = "comment's reviewer should not be empty")
     private String reviewer;
 
     @Schema(

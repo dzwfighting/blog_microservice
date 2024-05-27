@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -25,14 +26,17 @@ public class User {
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private int role;
 
     @ElementCollection
-    private List<Long> posts;
+    private Set<Long> posts;
+
+    @ElementCollection
+    private Set<Long> comments;
 
     public User(String email, String username, String password, int role) {
         this.email = email;
@@ -41,11 +45,20 @@ public class User {
         this.role = role;
     }
 
-    public User(String email, String username, String password, int role, List<Long> posts) {
+    public User(String email, String username, String password, int role, Set<Long> posts, Set<Long> comments) {
         this.email = email;
         this.username = username;
         this.password = password;
         this.role = role;
         this.posts = posts;
+        this.comments = comments;
+    }
+
+    public User(String email, String username, int role, Set<Long> posts, Set<Long> comments) {
+        this.email = email;
+        this.username = username;
+        this.role = role;
+        this.posts = posts;
+        this.comments = comments;
     }
 }

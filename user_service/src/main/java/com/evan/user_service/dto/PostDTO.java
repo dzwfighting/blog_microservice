@@ -1,4 +1,4 @@
-package com.evan.blogpost_service.dto;
+package com.evan.user_service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,12 +12,12 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
-    private String email;
-    private String username;
-//    private String password;
-    private int role;
-    private Set<Long> posts;
+public class PostDTO {
+    private Long postId;
+    private String author;
+    private String title;
+    private String description;
+    private String category;
     private Set<Long> comments;
 
 }

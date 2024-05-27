@@ -37,11 +37,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @EnableFeignClients
 @EnableDiscoveryClient
 public class BlogpostServiceApplication {
-
-//	@Bean
-//	public WebClient webClient() {
-//		return WebClient.builder().build();
-//	}
 	public static void main(String[] args) {
 		SpringApplication.run(BlogpostServiceApplication.class, args);
 	}

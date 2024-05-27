@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Schema(
         description = "UserDto Model Information"
@@ -35,7 +36,7 @@ public class UserDTO {
     @Schema(
             description = "User Password"
     )
-    @NotEmpty(message = "password should not null or empty")
+//    @NotEmpty(message = "password should not null or empty")
     private String password;
 
     @Schema(
@@ -47,6 +48,11 @@ public class UserDTO {
     @Schema(
             description = "All posts user post"
     )
-    private List<Long> posts;
+    private Set<Long> posts;
+
+    @Schema(
+            description = "All comments user comment"
+    )
+    private Set<Long> comments;
 }
 

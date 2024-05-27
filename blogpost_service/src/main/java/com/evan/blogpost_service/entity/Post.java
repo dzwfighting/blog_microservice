@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -31,7 +32,7 @@ public class Post {
     private String category;
 
     @ElementCollection
-    List<String> comments;
+    Set<Long> comments;
 
     public Post(Long postId, String author, String title, String description, String category) {
         this.postId = postId;
@@ -48,7 +49,7 @@ public class Post {
         this.category = category;
     }
 
-    public Post(String author, String title, String description, String category, List<String> comments) {
+    public Post(String author, String title, String description, String category, Set<Long> comments) {
         this.author = author;
         this.title = title;
         this.description = description;

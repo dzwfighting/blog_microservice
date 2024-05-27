@@ -1,5 +1,6 @@
 package com.evan.user_service.service.impl;
 
+import com.evan.user_service.dto.APIResponseDTO;
 import com.evan.user_service.dto.UserDTO;
 import com.evan.user_service.entity.User;
 import com.evan.user_service.exception.ResourceDuplicateException;
@@ -7,10 +8,12 @@ import com.evan.user_service.exception.ResourceNotFoundException;
 import com.evan.user_service.mapper.UserMapper;
 import com.evan.user_service.repository.UserRepository;
 import com.evan.user_service.service.UserService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private UserRepository userRepository;
+//    private WebClient webClient;
 
     @Override
     public UserDTO saveUser(UserDTO userDTO) {
@@ -65,6 +69,7 @@ public class UserServiceImpl implements UserService {
         return usersDTO;
     }
 
+//    @CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultUser")
     @Override
     public UserDTO updateUserDTO(UserDTO userDTO) {
         LOGGER.info("inside updateUserDTO - ");
@@ -73,15 +78,21 @@ public class UserServiceImpl implements UserService {
         User updateUser = new User(
                 userDTO.getEmail(),
                 userDTO.getUsername(),
-                userDTO.getPassword(),
-                userDTO.getRole()
+//                userDTO.getPassword(),
+                userDTO.getRole(),
+                userDTO.getPosts(),
+                userDTO.getComments()
         );
         findUser.setEmail(updateUser.getEmail());
         findUser.setUsername(updateUser.getUsername());
+//        findUser.setPassword(updateUser.getPassword());
+        findUser.setPosts(updateUser.getPosts());
+        findUser.setComments(updateUser.getComments());
         User savedUser = userRepository.save(findUser);
         UserDTO savedUserDTO = UserMapper.mapToUserDto(savedUser);
         return savedUserDTO;
     }
+
 
     @Override
     public String deleteUserByEmail(String email) {
@@ -90,5 +101,11 @@ public class UserServiceImpl implements UserService {
         if (delUser == null) throw new ResourceNotFoundException("User", "email", email);
         userRepository.delete(delUser);
         return "Success delete";
+    }
+
+    public UserDTO getDefaultUser(String email, Exception exception) {
+        User user = userRepository.findByEmail(email);
+        UserDTO userDTO = UserMapper.mapToUserDto(user);
+        return userDTO;
     }
 }

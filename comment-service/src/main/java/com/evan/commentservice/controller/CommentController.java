@@ -1,5 +1,6 @@
 package com.evan.commentservice.controller;
 
+import com.evan.commentservice.dto.APIResponseDTO;
 import com.evan.commentservice.dto.CommentDTO;
 import com.evan.commentservice.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,8 +33,8 @@ public class CommentController {
             description = "HTTP Status 201 CREATED"
     )
     @PostMapping
-    public ResponseEntity<CommentDTO> saveComment(@Valid @RequestBody CommentDTO commentDTO) {
-        CommentDTO saveCommentDTO = commentService.saveComment(commentDTO);
+    public ResponseEntity<APIResponseDTO> saveComment(@Valid @RequestBody CommentDTO commentDTO) {
+        APIResponseDTO saveCommentDTO = commentService.saveComment(commentDTO);
         return new ResponseEntity<>(saveCommentDTO, HttpStatus.CREATED);
     }
 
@@ -116,8 +117,8 @@ public class CommentController {
             description = "HTTP Status 201 CREATED"
     )
     @DeleteMapping("{commentId}")
-    public ResponseEntity<String> deleteComment(@PathVariable Long commentId) {
-        String del = commentService.deleteCommentById(commentId);
+    public ResponseEntity<APIResponseDTO> deleteComment(@PathVariable Long commentId) {
+        APIResponseDTO del = commentService.deleteCommentById(commentId);
         return new ResponseEntity<>(del, HttpStatus.OK);
     }
 }
