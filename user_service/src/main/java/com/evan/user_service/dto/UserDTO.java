@@ -21,6 +21,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserDTO {
     @Schema(
+            description = "User id"
+    )
+    private Long userId;
+    @Schema(
             description = "User Email"
     )
     @Email

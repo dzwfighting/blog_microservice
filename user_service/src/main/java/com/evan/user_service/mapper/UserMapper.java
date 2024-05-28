@@ -6,6 +6,7 @@ import com.evan.user_service.entity.User;
 public class UserMapper {
     public static UserDTO mapToUserDto(User user) {
         UserDTO userDTO = new UserDTO(
+                user.getUserId(),
                 user.getEmail(),
                 user.getUsername(),
                 user.getPassword(),
@@ -18,6 +19,7 @@ public class UserMapper {
 
     public static User mapToUser(UserDTO userDTO) {
         User user = new User(
+                userDTO.getUserId(),
                 userDTO.getEmail(),
                 userDTO.getUsername(),
                 userDTO.getPassword(),
