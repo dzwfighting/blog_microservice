@@ -29,6 +29,7 @@ public class User {
 //    @Column(nullable = false)
     private String password;
 
+//    0: manager,  1: user
     @Column(nullable = false)
     private int role;
 

@@ -32,18 +32,17 @@ public class CommentServiceImpl implements CommentService {
     public APIResponseDTO saveComment(CommentDTO commentDTO) {
         LOGGER.info("in saveComment()");
 //        Todo: get current user information
-        String email = "user1@gmail.com";
-        commentDTO.setReviewer(email);
+//        String email = "user1@gmail.com";
+//        commentDTO.setReviewer(email);
         Comment convertToComment = CommentMapper.mapToComment(commentDTO);
         Comment newComment = commentRepository.save(convertToComment);
         CommentDTO newCommentDto = CommentMapper.mapToCommentDto(newComment);
 
 //        check data if is exist
-        UserDTO userDTO = userClient.getUser(email);
+        UserDTO userDTO = userClient.getUser(commentDTO.getReviewer());
         Long postId = newCommentDto.getPostId();
         LOGGER.info("when save comment, the postId is: " + postId);
         PostDTO postDTO = postClient.getPostById(postId);
-        if (userDTO == null) throw new ResourceNotFoundException("user", "email", email);
         if (postDTO == null) throw new ResourceNotFoundException("post", "postId", postId);
 
 //       add commentId into user
@@ -63,6 +62,7 @@ public class CommentServiceImpl implements CommentService {
         apiResponseDTO.setCommentDTO(newCommentDto);
         apiResponseDTO.setUserDTO(newUserDTO);
         apiResponseDTO.setPostDTO(newPostDTO);
+        LOGGER.info("Success store the comment in: " + apiResponseDTO);
         return apiResponseDTO;
     }
 

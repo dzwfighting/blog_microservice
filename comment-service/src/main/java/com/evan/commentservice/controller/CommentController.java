@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Tag(
         name = "CRUD REST APIs for Comment Resource",
@@ -49,6 +50,7 @@ public class CommentController {
     @GetMapping("{commentId}")
     public ResponseEntity<CommentDTO> getCommentById(@PathVariable Long commentId) {
         CommentDTO commentDTO = commentService.getCommentById(commentId);
+        System.out.println("the commentDto is: " + commentDTO);
         return new ResponseEntity<>(commentDTO, HttpStatus.OK);
     }
 

@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import UserService from "../service/UserService";
+import {useNavigate} from "react-router-dom"
+import SideBar from "./communal/SideBar";
 
 const UserComponent = () => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const fetchUserData = async () => {
         setLoading(true);
-        console.log("the initial userData is: " + userData);
         try {
             const getUserData = await UserService.getUser();
             await setUserData(getUserData);
@@ -29,6 +31,7 @@ const UserComponent = () => {
     }
 
   return <div>
+      <SideBar />
       User Component
   </div>
 }
