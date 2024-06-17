@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(url = "http://localhost:8084", value = "category-service")
+//@FeignClient(url = "http://localhost:8084", value = "category-service")
+@FeignClient(name = "category-service")
 public interface CategoryClient {
     @GetMapping("api/categories/name/{name}")
     CategoryDTO getCategoryByName(@PathVariable String name);

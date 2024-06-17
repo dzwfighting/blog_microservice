@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(url = "http://localhost:8081", value = "USER-SERVICE")
+//@FeignClient(url = "http://localhost:8081", value = "USER-SERVICE")
+@FeignClient(name = "user-service")
 public interface UserClient {
     @GetMapping("api/users/email/{email}")
     UserDTO getUser(@PathVariable("email") String author);

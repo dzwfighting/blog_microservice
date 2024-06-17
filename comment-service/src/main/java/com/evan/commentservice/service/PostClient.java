@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(url = "http://localhost:8082", value = "blogpost-service")
+//@FeignClient(url = "http://localhost:8082", value = "blogpost-service")
+@FeignClient(name = "blogpost-service")
 public interface PostClient {
     @GetMapping("api/posts/{postId}")
     PostDTO getPostById(@PathVariable Long postId);

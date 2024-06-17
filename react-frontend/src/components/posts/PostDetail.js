@@ -55,7 +55,7 @@ const PostDetail = () => {
         if (!user) throw "user not exist";
         console.log("want to add a comment, the current user is: " + JSON.stringify(user));
         console.log("Add comment, the title is: " + commentTitle + " the content is: " + commentContent);
-        console.log("current commetns sets before add new: " + JSON.stringify(comments))
+        console.log("current comments sets before add new: " + JSON.stringify(comments))
         const reviewer = user.email;
         const newComment = await CommentService.postComment(reviewer, commentTitle, commentContent, postId);
         console.log("the new comment content is: " + JSON.stringify(newComment));
