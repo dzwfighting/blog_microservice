@@ -16,10 +16,7 @@ services:
 
   user-service:
     container_name: user-service
-    image: user-service
-    build:
-      context: ./user_service
-      dockerfile: Dockerfile
+    image: yiwen7943/user-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/user_db
       SPRING_DATASOURCE_USERNAME: root
@@ -38,10 +35,7 @@ services:
 
   blogpost-service:
     container_name: blogpost-service
-    image: blogpost-service
-    build:
-      context: ./blogpost_service
-      dockerfile: Dockerfile
+    image: yiwen7943/blogpost-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/post_db
       SPRING_DATASOURCE_USERNAME: root
@@ -60,10 +54,7 @@ services:
 
   category-service:
     container_name: category-service
-    image: category-service
-    build:
-      context: ./category-service
-      dockerfile: Dockerfile
+    image: yiwen7943/category-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/category_db
       SPRING_DATASOURCE_USERNAME: root
@@ -82,10 +73,10 @@ services:
 
   comment-service:
     container_name: comment-service
-    image: comment-service
-    build:
-      context: ./comment-service
-      dockerfile: Dockerfile
+    image: yiwen7943/comment-service
+#    build:
+#      context: ./comment-service
+#      dockerfile: Dockerfile
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/comment_db
       SPRING_DATASOURCE_USERNAME: root
@@ -104,10 +95,10 @@ services:
 
   api-gateway:
     container_name: api-gateway
-    image: api-gateway
-    build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+    image: yiwen7943/api-gateway
+#    build:
+#      context: ./api-gateway
+#      dockerfile: Dockerfile
     ports:
       - "8086:8086"
     depends_on:
@@ -118,10 +109,10 @@ services:
 
   config-server:
     container_name: config-server
-    image: config-server
-    build:
-      context: ./config-server
-      dockerfile: Dockerfile
+    image: yiwen7943/config-server
+#    build:
+#      context: ./config-server
+#      dockerfile: Dockerfile
     ports:
       - "8087:8087"
     depends_on:
@@ -132,14 +123,15 @@ services:
 
   service-registry:
     container_name: service-registry
-    image: service-registry
-    build:
-      context: ./service-registry
-      dockerfile: Dockerfile
+    image: yiwen7943/service-registry
+#    build:
+#      context: ./service-registry
+#      dockerfile: Dockerfile
     ports:
       - "8761:8761"
     networks:
       - blogmicro-networks
+    restart: on-failure
 
   rabbitmq:
     container_name: rabbitmq
@@ -148,6 +140,24 @@ services:
       - "5672:5672"
     networks:
       - blogmicro-networks
+
+  react-frontend:
+    container_name: react-frontend
+    image: yiwen7943/react-frontend
+#    build:
+#      context: ./react-frontend
+#      dockerfile: Dockerfile
+    depends_on:
+      - user-service
+      - blogpost-service
+      - comment-service
+      - category-service
+    ports:
+      - "3307:3307"
+    networks:
+      - blogmicro-networks
+    restart: on-failure
+
 networks:
   blogmicro-networks:
 
